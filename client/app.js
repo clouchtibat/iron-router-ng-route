@@ -68,13 +68,14 @@ angular.module("main", [
   "angular-meteor"
 ])
 
-.config(["$stateProvider", function($stateProvider){
-
+.config(function($urlRouterProvider, $stateProvider){
+  
   $stateProvider
   .state('test', {
     url: '/test',
     templateUrl: 'client/views/test.ng.html',
-    controller: 'testCtrl'
+    controller: 'testCtrl',
+    reloadOnSearch: false
   })
   .state('truc', {
     url: '/truc',
@@ -83,7 +84,9 @@ angular.module("main", [
     reloadOnSearch: false
   })  
   
-}])
+  $urlRouterProvider.otherwise("/test");
+  
+})
 
 .controller("testCtrl", function($scope, $timeout, $stateParams) {
 
@@ -99,8 +102,8 @@ angular.module("main", [
 
 .run(function($rootScope, $location){
 
-  $rootScope.$on("$routeChangeStart", function(){
-    console.log("angular route change start: '"+$location.url()+"'");
+  $rootScope.$on("$stateChangeStart", function(){
+    console.log("angular state change start: '"+$location.url()+"'");
   });
   
 });
