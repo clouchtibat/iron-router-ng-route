@@ -83,9 +83,9 @@ angular.module("main", [
   
 }])
 
-.controller("testCtrl", function($scope, $timeout) {
+.controller("testCtrl", function($scope, $timeout, $routeParams) {
 
-    console.log("angular test controller");
+    console.log("angular test controller - params: "+angular.toJson($routeParams));
   
 })
 
