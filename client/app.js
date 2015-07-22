@@ -64,28 +64,30 @@ Router.onAfterAction(function() {
 
 
 angular.module("main", [
-  "ngRoute",
+  "ui.router",
   "angular-meteor"
 ])
 
-.config(["$routeProvider", function($routeProvider){
-  $routeProvider
-  .when('/test', {
+.config(["$stateProvider", function($stateProvider){
+
+  $stateProvider
+  .state('test', {
+    url: '/test',
     templateUrl: 'client/views/test.ng.html',
     controller: 'testCtrl'
   })
-  .when("/truc",{
+  .state('truc', {
+    url: '/truc',
     templateUrl: "client/views/truc.ng.html",
     controller: "trucCtrl",
     reloadOnSearch: false
-  })
-  .otherwise("/test");
+  })  
   
 }])
 
-.controller("testCtrl", function($scope, $timeout, $routeParams) {
+.controller("testCtrl", function($scope, $timeout, $stateParams) {
 
-    console.log("angular test controller - params: "+angular.toJson($routeParams));
+    console.log("angular test controller - params: "+angular.toJson($stateParams));
   
 })
 
