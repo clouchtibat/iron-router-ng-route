@@ -72,7 +72,8 @@ angular.module("main", [
   $routeProvider
   .when('/test', {
     templateUrl: 'client/views/test.ng.html',
-    controller: 'testCtrl'
+    controller: 'testCtrl',
+    reloadOnSearch: false
   })
   .when("/truc",{
     templateUrl: "client/views/truc.ng.html",
