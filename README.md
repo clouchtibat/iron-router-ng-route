@@ -1,3 +1,3 @@
-# iron-router-ng-route
+# iron-router-ui-router
 
-Small test case using both Meteor iron-router package and AngularJS ngRoute module.
+Small test case using both Meteor iron-router package and AngularJS ui-router module.
