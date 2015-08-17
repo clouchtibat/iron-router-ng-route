@@ -21,24 +21,23 @@ var old = {},
     };
 
 
-Router.route('/', function () {
+Router.route('/(.*)', function () {
   this.render('main');
 });
-Router.route('/other', function () {
-  this.render('other');
-});
-
 
 Router.onBeforeAction(function(){
   console.log("iron router before action - new url: '"+this.url+"' -  old url: '"+old.url+"'");
-  
-  /*
-  if(old.url!=this.url){
-    old.url = this.url;
-    this.next();
+
+  if(this.url=="/other"){
+    this.render('other');
+  }  
+  else {
+    if(old.url!=this.url){
+      old.url = this.url;
+      this.next();
+    }
+    
   }
-  */
-  this.next();
   
 });
 
@@ -68,17 +67,21 @@ angular.module("main", [
   "angular-meteor"
 ])
 
-.config(["$routeProvider", function($routeProvider){
+.config(["$locationProvider", "$routeProvider", function($locationProvider, $routeProvider){
+  
+  $locationProvider.html5Mode({
+    enabled: true,
+    requireBase: false
+  });
+  
   $routeProvider
   .when('/test', {
     templateUrl: 'client/views/test.ng.html',
-    controller: 'testCtrl',
-    reloadOnSearch: false
+    controller: 'testCtrl'
   })
   .when("/truc",{
     templateUrl: "client/views/truc.ng.html",
-    controller: "trucCtrl",
-    reloadOnSearch: false
+    controller: "trucCtrl"
   })
   .otherwise("/test");
   
@@ -86,20 +89,26 @@ angular.module("main", [
 
 .controller("testCtrl", function($scope, $timeout, $routeParams) {
 
-    console.log("angular test controller - params: "+angular.toJson($routeParams));
+  console.log("angular test controller - params: "+angular.toJson($routeParams));
   
 })
 
 .controller("trucCtrl", function($scope, $timeout) {
 
-    console.log("angular truc controller");
+  console.log("angular truc controller");
   
 })
 
 .run(function($rootScope, $location){
 
-  $rootScope.$on("$routeChangeStart", function(){
+  $rootScope.$on("$routeChangeStart", function(event){
     console.log("angular route change start: '"+$location.url()+"'");
+    //event.preventDefault();
+  });
+  
+  $rootScope.$on("$routeChangeSuccess", function(event){
+    console.log("angular route change success: '"+$location.url()+"'");
+    event.preventDefault();
   });
   
 });
