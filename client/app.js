@@ -1,74 +1,4 @@
-var old = {},
-    appManager = new function () {
-      this.currentAppName;
-      this.currentApp;
-
-      this.startApp = function (container, appName) {
-        console.log("angular start app '"+appName+"' - old app: "+this.currentAppName);
-        if(appName && this.currentAppName!=appName){
-          if (this.currentApp) {
-            this.destroyApp(this.currentApp, this.currentAppName);
-          }
-          this.currentAppName = appName;
-          this.currentApp = angular.bootstrap(container, [appName]);      
-        }
-      }
-
-      this.destroyApp = function (app, appName) {
-        var $rootScope = app.get('$rootScope');
-        $rootScope.$destroy();
-      }
-    };
-
-
-Router.route('/(.*)', function () {
-  this.render('main');
-});
-/*
-Router.route('/other', function () {
-  this.render('other');
-});
-*/
-
-/*
-
-Router.onBeforeAction(function(){
-  console.log("iron router before action - new url: '"+this.url+"' -  old url: '"+old.url+"'");
-  
-
-  if(this.url=="/other"){
-    this.redirect("other")
-  }
-  else {
-    if(old.url!=this.url){
-      old.url = this.url;
-      this.next();
-    }    
-  }
-  
-  
-});
-
-*/
-
-
-Router.onAfterAction(function() {
-        
-  console.log("iron router after action");
-
-  Tracker.afterFlush(function() {
-    var body = angular.element(".body"),
-        app = body.data("app");
-
-    console.log("iron router tracker afterFlush - angular app name: '"+app+"'");  
-    appManager.startApp(body, app);
-
-  });
-
-});
-
-
-angular.module("main", [
+angular.module("root", [
   "ui.router",
   "angular-meteor"
 ])
@@ -78,35 +8,59 @@ angular.module("main", [
   $locationProvider.html5Mode(true);
   
   $stateProvider
-  .state('test', {
-    url: '/test',
-    templateUrl: 'client/views/test.ng.html',
-    controller: 'testCtrl',
+  .state('main', {
+    url: '/main',
+    templateUrl: 'client/views/main.ng.html',
     reloadOnSearch: false
   })
-  .state('truc', {
-    url: '/truc',
-    templateUrl: "client/views/truc.ng.html",
-    controller: "trucCtrl",
+  .state('main.page1', {
+    url: '/page1',
+    templateUrl: "client/views/main.page1.ng.html",
+    controller: "page1Ctrl",
     reloadOnSearch: false
   })  
+  .state('main.page2', {
+    url: '/page2',
+    templateUrl: "client/views/page2.ng.html",
+    controller: "page2Ctrl",
+    reloadOnSearch: false
+  })   
+  .state('export', {
+    url: '/export',
+    templateUrl: "client/views/export.ng.html",
+    controller: "exportCtrl",
+    reloadOnSearch: false
+  })
   
   
-  $urlRouterProvider.otherwise("/test");
+  $urlRouterProvider.otherwise("/main/page1");
   
 })
 
-.controller("testCtrl", function($scope, $timeout, $stateParams) {
+.controller("mainCtrl", function($scope) {
 
-    console.log("angular test controller - params: "+angular.toJson($stateParams));
+    console.log("angular mainCtrl controller");
   
 })
 
-.controller("trucCtrl", function($scope, $timeout) {
+.controller("page1Ctrl", function($scope, $stateParams) {
 
-    console.log("angular truc controller");
+    console.log("angular page1Ctrl controller - params: "+angular.toJson($stateParams));
   
 })
+
+.controller("page2Ctrl", function($scope) {
+
+    console.log("angular page2Ctrl controller");
+  
+})
+
+.controller("exportCtrl", function($scope) {
+
+    console.log("angular exportCtrl controller");
+  
+})
+
 
 .run(function($rootScope, $location){
 
