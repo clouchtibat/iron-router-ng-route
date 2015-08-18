@@ -4,7 +4,7 @@ var old = {},
       this.currentApp;
 
       this.startApp = function (container, appName) {
-        console.log("angular start app '"+appName+"'");
+        console.log("angular start app '"+appName+"' - old app: "+this.currentAppName);
         if(appName && this.currentAppName!=appName){
           if (this.currentApp) {
             this.destroyApp(this.currentApp, this.currentAppName);
@@ -21,26 +21,36 @@ var old = {},
     };
 
 
-Router.route('/', function () {
+Router.route('/(.*)', function () {
   this.render('main');
 });
+/*
 Router.route('/other', function () {
   this.render('other');
 });
+*/
 
+/*
 
 Router.onBeforeAction(function(){
   console.log("iron router before action - new url: '"+this.url+"' -  old url: '"+old.url+"'");
   
-  /*
-  if(old.url!=this.url){
-    old.url = this.url;
-    this.next();
+
+  if(this.url=="/other"){
+    this.redirect("other")
   }
-  */
-  this.next();
+  else {
+    if(old.url!=this.url){
+      old.url = this.url;
+      this.next();
+    }    
+  }
+  
   
 });
+
+*/
+
 
 Router.onAfterAction(function() {
         
@@ -58,17 +68,14 @@ Router.onAfterAction(function() {
 });
 
 
-
-
-
-
-
 angular.module("main", [
   "ui.router",
   "angular-meteor"
 ])
 
-.config(function($urlRouterProvider, $stateProvider){
+.config(function($urlRouterProvider, $stateProvider, $locationProvider){
+  
+  $locationProvider.html5Mode(true);
   
   $stateProvider
   .state('test', {
@@ -83,6 +90,7 @@ angular.module("main", [
     controller: "trucCtrl",
     reloadOnSearch: false
   })  
+  
   
   $urlRouterProvider.otherwise("/test");
   
