@@ -69,10 +69,14 @@ angular.module("main", [
 
 .config(["$locationProvider", "$routeProvider", function($locationProvider, $routeProvider){
   
+  /*
   $locationProvider.html5Mode({
     enabled: true,
     requireBase: false
   });
+  */
+  
+  $locationProvider.html5Mode(true);  
   
   $routeProvider
   .when('/test', {
